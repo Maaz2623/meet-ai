@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { HomeView } from "@/modules/home/ui/views/home-view";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -10,7 +11,7 @@ const HomePage = async () => {
 
   if (!session) redirect("/auth/sign-in");
 
-  return <div>Session: {JSON.stringify(session)}</div>;
+  return <HomeView />;
 };
 
 export default HomePage;
