@@ -16,8 +16,8 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
@@ -28,8 +28,6 @@ const formSchema = z.object({
 });
 
 export const SignInView = () => {
-  const router = useRouter();
-
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
@@ -48,14 +46,12 @@ export const SignInView = () => {
       {
         email: data.email,
         password: data.password,
+        callbackURL: "/",
       },
 
       {
         onRequest: () => {
           setLoading(true);
-        },
-        onSuccess: () => {
-          router.push(`/`);
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -140,11 +136,55 @@ export const SignInView = () => {
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4 ">
-                    <Button variant={`outline`} type="button">
-                      Google
+                    <Button
+                      variant={`outline`}
+                      type="button"
+                      onClick={() => {
+                        authClient.signIn.social(
+                          {
+                            provider: "google",
+                            callbackURL: "/",
+                          },
+                          {
+                            onRequest: () => {
+                              setLoading(true);
+                            },
+                            onError: ({ error }) => {
+                              setError(error.message);
+                            },
+                            onResponse: () => {
+                              setLoading(false);
+                            },
+                          }
+                        );
+                      }}
+                    >
+                      <FaGoogle />
                     </Button>
-                    <Button variant={`outline`} type="button">
-                      Github
+                    <Button
+                      onClick={() => {
+                        authClient.signIn.social(
+                          {
+                            provider: "github",
+                            callbackURL: "/",
+                          },
+                          {
+                            onRequest: () => {
+                              setLoading(true);
+                            },
+                            onError: ({ error }) => {
+                              setError(error.message);
+                            },
+                            onResponse: () => {
+                              setLoading(false);
+                            },
+                          }
+                        );
+                      }}
+                      variant={`outline`}
+                      type="button"
+                    >
+                      <FaGithub />
                     </Button>
                   </div>
                   <div className="text-center text-sm">
