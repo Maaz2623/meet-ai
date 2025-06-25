@@ -1,7 +1,6 @@
-import type  {AppRouter}  from "@/trpc/routers/_app";
-import { inferRouterOutputs } from "@trpc/server";
-
-type RouterOutput = inferRouterOutputs<AppRouter>;
+import type { AppRouter } from "@/trpc/routers/_app";
+import { inferProcedureOutput } from "@trpc/server";
 
 
-export type AgentGetOne = RouterOutput["agents"]["getOne"]
+// ✅ Best Practice
+export type AgentGetOne = inferProcedureOutput<AppRouter["agents"]["getOne"]>
