@@ -1,3 +1,4 @@
+import { AgentListHeader } from "@/modules/agents/ui/components/agents-list-header";
 import {
   AgentsView,
   AgentsViewError,
@@ -14,13 +15,16 @@ const AgentsPage = async () => {
   void queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<AgentsViewLoading />}>
-        <ErrorBoundary fallback={<AgentsViewError />}>
-          <AgentsView />
-        </ErrorBoundary>
-      </Suspense>
-    </HydrationBoundary>
+    <>
+      <AgentListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<AgentsViewLoading />}>
+          <ErrorBoundary fallback={<AgentsViewError />}>
+            <AgentsView />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+    </>
   );
 };
 
